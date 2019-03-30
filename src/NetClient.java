@@ -9,10 +9,10 @@ public class NetClient {
 
         Registry registry = LocateRegistry.getRegistry("127.0.0.1");//Ссылка на удаленный реестр,порт не передается, но может
         ChatServerInterface stub = (ChatServerInterface) registry.lookup("ChatServer");//Сслыка на удаленный объект
+        System.out.print("Введите имя:");
         Scanner scanner = new Scanner(System.in);
         String name = scanner.nextLine();
         new Thread(new ChatClient(name, stub)).start();//added
-        //System.out.println("Increaded number is "+stub.getIncreasedNumber(1));
     }
 }
 
