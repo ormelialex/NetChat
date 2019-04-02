@@ -26,36 +26,38 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF,Runn
         Scanner scanner = new Scanner(System.in);
         boolean swit = true;
         String message;
-        while (swit) {
-            message = scanner.nextLine();
-            try {
-                if("0".equals(message.trim())){
-                    chatServer.broadcastMessage(name+" went out");
-                    chatServer.removeChatClient(this);
-                    System.out.println("For join enter 1");
-                    swit = false;
-                }else {
-                    chatServer.broadcastMessage(name + " : " + message);
+        while(true) {
+            while (swit) {
+                message = scanner.nextLine();
+                try {
+                    if ("0".equals(message.trim())) {
+                        chatServer.broadcastMessage(name + " went out");
+                        chatServer.removeChatClient(this);
+                        System.out.println("For join enter 1");
+                        swit = false;
+                    } else {
+                        chatServer.broadcastMessage(name + " : " + message);
+                    }
+                } catch (RemoteException e) {
+                    e.printStackTrace();
                 }
-            } catch (RemoteException e) {
-                e.printStackTrace();
             }
-        }
-        while(!swit){
-            message = scanner.nextLine();
-            System.out.println("For join enter 1");
-            if("1".equals(message.trim())){
-                try {
-                    chatServer.registerChatClient(this);//регистрируем клиента
-                } catch (RemoteException e) {
-                    e.printStackTrace();
+            while (!swit) {
+                message = scanner.nextLine();
+                System.out.println("For join enter 1");
+                if ("1".equals(message.trim())) {
+                    try {
+                        chatServer.registerChatClient(this);//регистрируем клиента
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        chatServer.broadcastMessage(name + " joined ");
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                    swit = true;
                 }
-                try {
-                    chatServer.broadcastMessage(name + " joined ");
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-                swit = true;
             }
         }
     }
