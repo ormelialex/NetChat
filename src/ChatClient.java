@@ -21,8 +21,8 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF,Runn
 
     @Override // считывает сообщение и отображает его всем пользователям
     public void run() {
-        System.out.println("Enter Message");
-        System.out.println("For exit enter 0");
+        System.out.println("//Enter Message");
+        System.out.println("//For exit enter 0");
         Scanner scanner = new Scanner(System.in);
         boolean swit = true;
         String message;
@@ -33,7 +33,7 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF,Runn
                     if ("0".equals(message.trim())) {
                         chatServer.broadcastMessage(name + " went out");
                         chatServer.removeChatClient(this);
-                        System.out.println("For join enter 1");
+                        System.out.println("//For join enter 1");
                         swit = false;
                     } else {
                         chatServer.broadcastMessage(name + " : " + message);
@@ -44,7 +44,7 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF,Runn
             }
             while (!swit) {
                 message = scanner.nextLine();
-                System.out.println("For join enter 1");
+                System.out.println("//For join enter 1");
                 if ("1".equals(message.trim())) {
                     try {
                         chatServer.registerChatClient(this);//регистрируем клиента
