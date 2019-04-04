@@ -1,10 +1,13 @@
 package Server;
 
+import Client.ChatClient;
 import Client.ChatClientIF;
+import rmi.PrivateMessage;
 import rmi.User;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public interface ChatServerInterface extends Remote {//Методы, доступные клиентам для вызова
 
@@ -14,7 +17,8 @@ public interface ChatServerInterface extends Remote {//Методы, досту�
 
     void broadcastMessage(String message) throws RemoteException;//трансляция сообщений для других клиентов
 
-    void getUser(User user) throws RemoteException;
+    void broadcastPrivateMessage(PrivateMessage privateMsg) throws RemoteException;
 
+    ChatClient getClient(String name) throws RemoteException;
 
 }

@@ -37,9 +37,7 @@ public class NetClient {
                     client.disconnect();
                     break;
                 case "send":
-                    System.out.print("Enter message : ");
-                    Message msg = new Message(scanner.nextLine().trim(),user.getName());
-                    client.send(msg);
+                    client.send();
                     break;
             }
         }

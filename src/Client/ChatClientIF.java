@@ -1,9 +1,10 @@
 package Client;
 
-import rmi.Message;
+import rmi.User;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public interface ChatClientIF extends Remote {//Added
 
@@ -13,5 +14,7 @@ public interface ChatClientIF extends Remote {//Added
 
     void disconnect() throws RemoteException;
 
-    void send(Message message) throws RemoteException;
+    void send() throws RemoteException;
+
+    String getName() throws RemoteException;
 }
