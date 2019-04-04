@@ -1,15 +1,16 @@
 package rmi;
 
 import Client.ChatClient;
+import Client.ChatClientIF;
 
 public class PrivateMessage extends Message {
-    private ChatClient to;
+    private ChatClientIF to;
 
-    public ChatClient getTo() {
+    public ChatClientIF getTo() {
         return to;
     }
 
-    public PrivateMessage(String message, String name, ChatClient chatClient) {
+    public PrivateMessage(String message, String name, ChatClientIF chatClient) {
         super(message, name);
         this.to = chatClient;
     }

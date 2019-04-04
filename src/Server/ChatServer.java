@@ -3,7 +3,6 @@ package Server;
 import Client.ChatClient;
 import Client.ChatClientIF;
 import rmi.PrivateMessage;
-import rmi.User;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -39,11 +38,11 @@ class ChatServer extends UnicastRemoteObject implements ChatServerInterface { //
         privateMessage.getTo().retrieveMessage(privateMessage.getMessage());
     }
 
-    public ChatClient getClient(String name) throws RemoteException {
+    public ChatClientIF getClient(String name) throws RemoteException {
         for (ChatClientIF chatClient : chatClients
         ) {
             if (chatClient.getName().equals(name)) {
-                return (ChatClient) chatClient;
+                return chatClient;
             }
         }
         return null;

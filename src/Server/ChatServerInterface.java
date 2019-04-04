@@ -19,6 +19,6 @@ public interface ChatServerInterface extends Remote {//Методы, досту�
 
     void broadcastPrivateMessage(PrivateMessage privateMsg) throws RemoteException;
 
-    ChatClient getClient(String name) throws RemoteException;
+    ChatClientIF getClient(String name) throws RemoteException;
 
 }

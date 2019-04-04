@@ -70,7 +70,7 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
                     String message = sc.nextLine().trim();
                     System.out.println("Enter the recipient of the message");
                     String to = sc.nextLine().trim();
-                    ChatClient chatClient = chatServer.getClient(to);
+                    ChatClientIF chatClient = chatServer.getClient(to);
                     PrivateMessage privateMsg = new PrivateMessage(message, this.name, chatClient);
                     chatServer.broadcastPrivateMessage(privateMsg);
                     //logic
