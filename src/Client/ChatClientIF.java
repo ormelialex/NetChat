@@ -1,5 +1,6 @@
 package Client;
 
+import Server.ChatServerInterface;
 import rmi.User;
 
 import java.rmi.Remote;
@@ -17,4 +18,8 @@ public interface ChatClientIF extends Remote {//Added
     void send() throws RemoteException;
 
     String getName() throws RemoteException;
+
+    String getInfo() throws RemoteException;
+
+    ChatServerInterface getChatServer() throws RemoteException;
 }

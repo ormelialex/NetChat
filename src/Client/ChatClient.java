@@ -23,8 +23,18 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
         //chatServer.registerChatClient(this);//регистрируем клиента
     }
 
+    public ChatServerInterface getChatServer() {
+        return chatServer;
+    }
+
+    @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String getInfo() {
+        return info;
     }
 
     @Override
@@ -70,11 +80,13 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
                     String message = sc.nextLine().trim();
                     System.out.println("Enter the recipient of the message");
                     String to = sc.nextLine().trim();
-                    ChatClientIF chatClient = chatServer.getClient(to);
-                    PrivateMessage privateMsg = new PrivateMessage(message, this.name, chatClient);
+                    ChatClientIF recipient = chatServer.getClient(to);
+                    PrivateMessage privateMsg = new PrivateMessage(message, this.name, recipient);
                     chatServer.broadcastPrivateMessage(privateMsg);
                     //logic
                     break;
+                    default:
+                        System.out.println("Next time choose one of them");
             }
         } else {
             System.out.println("Firstly, connect to chat");
