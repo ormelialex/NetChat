@@ -69,7 +69,7 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
         if (connected) {
             System.out.println("For private message enter 'private'\nFor public message enter 'public'");
             Scanner sc = new Scanner(System.in);
-            String choose = sc.nextLine().trim();
+            String choose = sc.nextLine().trim().toLowerCase();
             System.out.print("Enter message : ");
             switch (choose) {
                 case "public":
@@ -79,10 +79,10 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
                 case "private":
                     String message = sc.nextLine().trim();
                     System.out.println("Enter the recipient of the message");
-                    String to = sc.nextLine().trim();
+                    String to = sc.nextLine().trim().toLowerCase();
                     ChatClientIF recipient = chatServer.getClient(to);
                     PrivateMessage privateMsg = new PrivateMessage(message, this.name, recipient);
-                    chatServer.broadcastPrivateMessage(privateMsg);
+                    chatServer.broadcastMessage(privateMsg);
                     //logic
                     break;
                     default:
