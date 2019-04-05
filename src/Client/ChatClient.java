@@ -48,7 +48,6 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
             System.out.println("You are already connected");
         } else {
             chatServer.registerChatClient(this);//регистрируем клиента
-            chatServer.broadcastMessage(this.name + " joined ");
             connected = true;
         }
     }
@@ -56,7 +55,6 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
     @Override
     public void disconnect() throws RemoteException {
         if (connected) {
-            chatServer.broadcastMessage(this.name + " went out");
             chatServer.removeChatClient(this);
             connected = false;
         } else {
@@ -74,7 +72,7 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
             switch (choose) {
                 case "public":
                     Message msg = new Message(sc.nextLine().trim(), this.name);
-                    chatServer.broadcastMessage(msg.getFrom() + " : " + msg.getMessage());
+                    chatServer.broadcastMessage(msg);
                     break;
                 case "private":
                     String message = sc.nextLine().trim();

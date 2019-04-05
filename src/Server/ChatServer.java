@@ -2,6 +2,7 @@ package Server;
 
 import Client.ChatClient;
 import Client.ChatClientIF;
+import rmi.Message;
 import rmi.PrivateMessage;
 import rmi.User;
 
@@ -20,11 +21,15 @@ class ChatServer extends UnicastRemoteObject implements ChatServerInterface { //
     @Override
     public void registerChatClient(ChatClientIF chatClient) throws RemoteException {
         this.chatClients.add(chatClient);//Добавление пользователя в лист пользователей
+        ChatServerInterface chatServ = chatClient.getChatServer();
+        chatServ.broadcastMessage(chatClient.getName() + " joined");
     }
 
     @Override
     public void removeChatClient(ChatClientIF chatClient) throws RemoteException {
         this.chatClients.remove(chatClient);
+        ChatServerInterface chatServ = chatClient.getChatServer();
+        chatServ.broadcastMessage(chatClient.getName() + " went out");
     }
 
     @Override
@@ -35,12 +40,20 @@ class ChatServer extends UnicastRemoteObject implements ChatServerInterface { //
         }
     }
 
+    @Override
+    public void broadcastMessage(Message msg) throws RemoteException {
+        int i = 0;
+        while (i < chatClients.size()) {
+            chatClients.get(i++).retrieveMessage("[PUBLIC]" + msg.getFrom() + " : " + msg.getMessage());//Клиенты увидят все сообщения , которые транслировались
+        }
+    }
+
     public void broadcastMessage(PrivateMessage privateMessage) throws RemoteException {
         ChatClientIF recipient = privateMessage.getTo();
         int i = 0;
         while (i < chatClients.size()) {
             if(recipient.equals(chatClients.get(i))) {
-                chatClients.get(i).retrieveMessage("[Private]"+privateMessage.getFrom() + " : "+privateMessage.getMessage());//Клиенты увидят все сообщения , которые транслировались
+                chatClients.get(i).retrieveMessage("[PRIVATE]"+privateMessage.getFrom() + " : "+privateMessage.getMessage());//Клиенты увидят все сообщения , которые транслировались
             }
             i++;
         }
