@@ -16,15 +16,15 @@ public class NetClient {
         ChatServerInterface stub = (ChatServerInterface) registry.lookup("ChatServer"); //Сслыка на удаленный объект
         System.out.print("Введите имя:");
         Scanner scanner = new Scanner(System.in);
-        String name = scanner.nextLine().trim();
+        String name = scanner.nextLine().trim().toLowerCase();
         System.out.print("Введите информацию о себе:");
-        String info = scanner.nextLine().trim();
+        String info = scanner.nextLine().trim().toLowerCase();
         User user = new User(name, info);
         ChatClient client = new ChatClient(user, stub);
         System.out.println("To connect to the server, use 'connect'\nTo disconnect to the server, use the 'disconnect'\n" +
                 "To exist the chat, use 'exist'\nTo send message, use 'send'");
         while (true) {
-            String command = scanner.nextLine().trim();
+            String command = scanner.nextLine().trim().toLowerCase();
             switch (command) {
                 case "exist":
                     client.disconnect();

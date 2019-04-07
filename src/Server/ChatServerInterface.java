@@ -2,6 +2,7 @@ package Server;
 
 import Client.ChatClient;
 import Client.ChatClientIF;
+import rmi.Message;
 import rmi.PrivateMessage;
 import rmi.User;
 
@@ -17,7 +18,9 @@ public interface ChatServerInterface extends Remote {//Методы, досту�
 
     void broadcastMessage(String message) throws RemoteException;//трансляция сообщений для других клиентов
 
-    void broadcastPrivateMessage(PrivateMessage privateMsg) throws RemoteException;
+    void broadcastMessage(Message Msg) throws RemoteException;
+
+    void broadcastMessage(PrivateMessage privateMsg) throws RemoteException;
 
     ChatClientIF getClient(String name) throws RemoteException;
 

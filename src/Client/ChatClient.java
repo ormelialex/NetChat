@@ -48,7 +48,6 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
             System.out.println("You are already connected");
         } else {
             chatServer.registerChatClient(this);//регистрируем клиента
-            chatServer.broadcastMessage(this.name + " joined ");
             connected = true;
         }
     }
@@ -56,7 +55,6 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
     @Override
     public void disconnect() throws RemoteException {
         if (connected) {
-            chatServer.broadcastMessage(this.name + " went out");
             chatServer.removeChatClient(this);
             connected = false;
         } else {
@@ -69,22 +67,25 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
         if (connected) {
             System.out.println("For private message enter 'private'\nFor public message enter 'public'");
             Scanner sc = new Scanner(System.in);
-            String choose = sc.nextLine().trim();
+            String choose = sc.nextLine().trim().toLowerCase();
             System.out.print("Enter message : ");
             switch (choose) {
                 case "public":
                     Message msg = new Message(sc.nextLine().trim(), this.name);
-                    chatServer.broadcastMessage(msg.getFrom() + " : " + msg.getMessage());
+                    chatServer.broadcastMessage(msg);
                     break;
                 case "private":
                     String message = sc.nextLine().trim();
                     System.out.println("Enter the recipient of the message");
-                    String to = sc.nextLine().trim();
+                    String to = sc.nextLine().trim().toLowerCase();
                     ChatClientIF recipient = chatServer.getClient(to);
                     if(!recipient.equals(null)) {
                         PrivateMessage privateMsg = new PrivateMessage(message, this.name, recipient);
-                        chatServer.broadcastPrivateMessage(privateMsg);
+                        chatServer.broadcastMessage(privateMsg);
+                    }else{
+                        System.out.println("You don't enter recipient");
                     }
+                    //logic
                     break;
                     default:
                         System.out.println("Next time choose one of them");
