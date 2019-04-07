@@ -81,9 +81,10 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
                     System.out.println("Enter the recipient of the message");
                     String to = sc.nextLine().trim();
                     ChatClientIF recipient = chatServer.getClient(to);
-                    PrivateMessage privateMsg = new PrivateMessage(message, this.name, recipient);
-                    chatServer.broadcastPrivateMessage(privateMsg);
-                    //logic
+                    if(!recipient.equals(null)) {
+                        PrivateMessage privateMsg = new PrivateMessage(message, this.name, recipient);
+                        chatServer.broadcastPrivateMessage(privateMsg);
+                    }
                     break;
                     default:
                         System.out.println("Next time choose one of them");

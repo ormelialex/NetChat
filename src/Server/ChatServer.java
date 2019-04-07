@@ -37,10 +37,12 @@ class ChatServer extends UnicastRemoteObject implements ChatServerInterface { //
 
     public void broadcastPrivateMessage(PrivateMessage privateMessage) throws RemoteException {
         ChatClientIF recipient = privateMessage.getTo();
-        int i = 0;
-        while (i <= chatClients.size()) {
-            if(recipient.equals(chatClients.get(i))) {
-                chatClients.get(i).retrieveMessage(privateMessage.getMessage());//Клиенты увидят все сообщения , которые транслировались
+        if(!recipient.equals(null)) {
+            int i = 0;
+            while (i <= chatClients.size()) {
+                if (recipient.equals(chatClients.get(i))) {
+                    chatClients.get(i).retrieveMessage(privateMessage.getMessage());//Клиенты увидят все сообщения , которые транслировались
+                }
             }
         }
     }
