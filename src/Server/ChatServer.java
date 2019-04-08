@@ -52,12 +52,12 @@ class ChatServer extends UnicastRemoteObject implements ChatServerInterface { //
         ChatClientIF recipient = privateMessage.getTo();
         if(recipient != null) {
             int i = 0;
-            while (i <= chatClients.size()) {
+            while (i < chatClients.size()) {
                 if (recipient.equals(chatClients.get(i))) {
-                    chatClients.get(i).retrieveMessage(privateMessage.getMessage());//Клиенты увидят все сообщения , которые транслировались
+                    chatClients.get(i).retrieveMessage("[PRIVATE]"+"From "+ privateMessage.getFrom() + " to " + privateMessage.getTo().getName()+" : " + privateMessage.getMessage());//Клиенты увидят все сообщения , которые транслировались
                 }
+                i++;
             }
-            i++;
         }
     }
 
