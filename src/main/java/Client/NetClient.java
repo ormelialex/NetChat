@@ -5,12 +5,6 @@ import java.rmi.NotBoundException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import Client.ChatClient;
-
-import com.google.gson.stream.JsonWriter;
 import Server.ChatServerInterface;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
