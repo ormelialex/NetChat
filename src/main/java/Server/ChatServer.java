@@ -15,7 +15,7 @@ class ChatServer extends UnicastRemoteObject implements ChatServerInterface { //
     private List<ChatClientIF> chatClients;
 
     protected ChatServer() throws RemoteException {
-        chatClients = new ArrayList<>();//инициализация всех пользоавтелей
+        chatClients = new ArrayList<ChatClientIF>();//инициализация всех пользоавтелей
     }
 
     @Override
