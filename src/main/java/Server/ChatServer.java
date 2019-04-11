@@ -10,65 +10,64 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 class ChatServer extends UnicastRemoteObject implements ChatServerInterface { //Добавлено
-    private List<ChatClientIF> chatClients;
+    private ConcurrentMap<String,ChatClientIF> chatClients;
 
     protected ChatServer() throws RemoteException {
-        chatClients = new ArrayList<ChatClientIF>();//инициализация всех пользоавтелей
+        chatClients = new ConcurrentHashMap<>();//инициализация всех пользоавтелей
     }
 
     @Override
-    public void registerChatClient(ChatClientIF chatClient) throws RemoteException {
-        this.chatClients.add(chatClient);//Добавление пользователя в лист пользователей
+    public void registerChatClient(String name,ChatClientIF chatClient) throws RemoteException {
+        this.chatClients.put(name,chatClient);//Добавление пользователя в лист пользователей
         ChatServerInterface chatServ = chatClient.getChatServer();
         chatServ.broadcastMessage(chatClient.getName() + " joined");
     }
 
     @Override
-    public void removeChatClient(ChatClientIF chatClient) throws RemoteException {
-        this.chatClients.remove(chatClient);
+    public void removeChatClient(String name,ChatClientIF chatClient) throws RemoteException {
+        this.chatClients.remove(chatClient,name);
         ChatServerInterface chatServ = chatClient.getChatServer();
         chatServ.broadcastMessage(chatClient.getName() + " went out");
     }
 
     @Override
     public void broadcastMessage(String message) throws RemoteException {
-        int i = 0;
-        while (i < chatClients.size()) {
-            chatClients.get(i++).retrieveMessage(message);//Клиенты увидят все сообщения , которые транслировались
+        for(ConcurrentMap.Entry<String,ChatClientIF> entry : chatClients.entrySet()){
+            entry.getValue().retrieveMessage(message);
         }
     }
 
     @Override
     public void broadcastMessage(Message msg) throws RemoteException {
-        int i = 0;
-        while (i < chatClients.size()) {
-            chatClients.get(i++).retrieveMessage("[PUBLIC]" + msg.getFrom() + " : " + msg.getMessage());//Клиенты увидят все сообщения , которые транслировались
+        for(ConcurrentMap.Entry<String,ChatClientIF> entry : chatClients.entrySet()){
+            entry.getValue().retrieveMessage("[PUBLIC]" + msg.getFrom() + " : " + msg.getMessage());
         }
     }
 
     public void broadcastMessage(PrivateMessage privateMessage) throws RemoteException {
-        ChatClientIF recipient = privateMessage.getTo();
+        ChatClientIF recipient = chatClients.get(privateMessage.getTo());
         if(recipient != null) {
-            int i = 0;
-            while (i < chatClients.size()) {
-                if (recipient.equals(chatClients.get(i))) {
-                    chatClients.get(i).retrieveMessage("[PRIVATE]"+"From "+ privateMessage.getFrom() + " to " + privateMessage.getTo().getName()+" : " + privateMessage.getMessage());//Клиенты увидят все сообщения , которые транслировались
-                }
-                i++;
-            }
+            recipient.retrieveMessage("[PRIVATE]"+"From "+ privateMessage.getFrom() + " to " + privateMessage.getTo().getName()+" : " + privateMessage.getMessage());
         }
     }
 
+    @Override
+    public List<String> getAllUsers() throws RemoteException {
+        ArrayList<String> users = new ArrayList<>();
+        for(ConcurrentMap.Entry<String,ChatClientIF> entry : chatClients.entrySet()){
+            users.add(entry.getKey());
+        }
+        return users;
+    }
+
     public ChatClientIF getClient(String name) throws RemoteException {
-        for (ChatClientIF chatClient : chatClients
-        ) {
-            if (chatClient.getName().equals(name)) {
-                return chatClient;
-            }
+        for(ConcurrentMap.Entry<String,ChatClientIF> entry : chatClients.entrySet()){
+            if(entry.getKey().equals(name)){ return entry.getValue();}
         }
         return null;
-
     }
 }

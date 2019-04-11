@@ -38,7 +38,7 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
     }
 
     @Override
-    public void retrieveMessage(String message) throws RemoteException {
+    public void retrieveMessage(String message) {
         System.out.println(message);
     }
 
@@ -47,7 +47,7 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
         if (connected) {
             System.out.println("You are already connected");
         } else {
-            chatServer.registerChatClient(this);//регистрируем клиента
+            chatServer.registerChatClient(this.name,this);//регистрируем клиента
             connected = true;
         }
     }
@@ -55,7 +55,7 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
     @Override
     public void disconnect() throws RemoteException {
         if (connected) {
-            chatServer.removeChatClient(this);
+            chatServer.removeChatClient(this.name,this);
             connected = false;
         } else {
             System.out.println("You are already disconnected");
@@ -75,6 +75,7 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
                     chatServer.broadcastMessage(msg);
                     break;
                 case "private":
+                    //chatServer.getAllUsers();
                     String message = sc.nextLine().trim();
                     System.out.println("Enter the recipient of the message");
                     String to = sc.nextLine().trim().toLowerCase();
