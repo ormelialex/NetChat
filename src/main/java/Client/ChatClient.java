@@ -7,7 +7,6 @@ import rmi.User;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
@@ -75,8 +74,12 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
                     chatServer.broadcastMessage(msg);
                     break;
                 case "private":
-                    //chatServer.getAllUsers();
                     String message = sc.nextLine().trim();
+                    System.out.println("Online users:");
+                    for (String user:chatServer.getAllUsers()
+                    ) {
+                        System.out.println(user);
+                    }
                     System.out.println("Enter the recipient of the message");
                     String to = sc.nextLine().trim().toLowerCase();
                     ChatClientIF recipient = chatServer.getClient(to);
