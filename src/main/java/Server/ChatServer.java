@@ -29,7 +29,7 @@ class ChatServer extends UnicastRemoteObject implements ChatServerInterface { //
 
     @Override
     public void removeChatClient(String name,ChatClientIF chatClient) throws RemoteException {
-        this.chatClients.remove(chatClient,name);
+        this.chatClients.remove(name,chatClient);
         ChatServerInterface chatServ = chatClient.getChatServer();
         chatServ.broadcastMessage(chatClient.getName() + " went out");
     }

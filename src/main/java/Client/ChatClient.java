@@ -86,6 +86,7 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
                     if(recipient != null) {
                         PrivateMessage privateMsg = new PrivateMessage(message, this.name, recipient);
                         chatServer.broadcastMessage(privateMsg);
+                        System.out.println("Message successfully send");
                     }else{
                         System.out.println("You don't enter recipient");
                     }
