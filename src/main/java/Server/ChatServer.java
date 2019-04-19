@@ -49,7 +49,7 @@ class ChatServer extends UnicastRemoteObject implements ChatServerInterface { //
     }
 
     public void broadcastMessage(PrivateMessage privateMessage) throws RemoteException {
-        ChatClientIF recipient = chatClients.get(privateMessage.getTo());
+        ChatClientIF recipient = privateMessage.getTo();
         if(recipient != null) {
             recipient.retrieveMessage("[PRIVATE]"+"From "+ privateMessage.getFrom() + " to " + privateMessage.getTo().getName()+" : " + privateMessage.getMessage());
         }

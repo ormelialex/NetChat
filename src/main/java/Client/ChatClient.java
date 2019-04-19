@@ -80,7 +80,7 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
                     ) {
                         System.out.println(user);
                     }
-                    System.out.println("Enter the recipient of the message");
+                    System.out.println("Enter the recipient of the message : ");
                     String to = sc.nextLine().trim().toLowerCase();
                     ChatClientIF recipient = chatServer.getClient(to);
                     if(recipient != null) {

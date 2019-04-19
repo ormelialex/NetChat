@@ -22,7 +22,7 @@ public class NetClient {
         File file = new File("./src/main/resources/user.json");
         Gson gson = new GsonBuilder().create();
         Reader reader = new FileReader(file);
-        user1 = gson.fromJson(reader, User.class);
+        //user1 = gson.fromJson(reader, User.class);
         if (user1 == null) {
             System.out.print("Enter nickname:");
             String name = scanner.nextLine().trim().toLowerCase();
